@@ -1,0 +1,53 @@
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /MyFolder/dlib-19.4/build/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/make "cmTryCompileExec773929791/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec773929791.dir/build.make CMakeFiles/cmTryCompileExec773929791.dir/build
+make[1]: ディレクトリ `/MyFolder/dlib-19.4/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/cmake -E cmake_progress_report /MyFolder/dlib-19.4/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec773929791.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTryCompileExec773929791.dir/CheckSymbolExists.c.o   -c /MyFolder/dlib-19.4/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTryCompileExec773929791
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec773929791.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTryCompileExec773929791.dir/CheckSymbolExists.c.o  -o cmTryCompileExec773929791 -rdynamic 
+CMakeFiles/cmTryCompileExec773929791.dir/CheckSymbolExists.c.o: 関数 `main' 内:
+CheckSymbolExists.c:(.text+0x16): `pthread_create' に対する定義されていない参照です
+collect2: error: ld returned 1 exit status
+make[1]: *** [cmTryCompileExec773929791] エラー 1
+make[1]: ディレクトリ `/MyFolder/dlib-19.4/build/CMakeFiles/CMakeTmp' から出ます
+make: *** [cmTryCompileExec773929791/fast] エラー 2
+
+File /MyFolder/dlib-19.4/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /MyFolder/dlib-19.4/build/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/make "cmTryCompileExec1611367580/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec1611367580.dir/build.make CMakeFiles/cmTryCompileExec1611367580.dir/build
+make[1]: ディレクトリ `/MyFolder/dlib-19.4/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/cmake -E cmake_progress_report /MyFolder/dlib-19.4/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec1611367580.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTryCompileExec1611367580.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
+Linking C executable cmTryCompileExec1611367580
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1611367580.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTryCompileExec1611367580.dir/CheckFunctionExists.c.o  -o cmTryCompileExec1611367580 -rdynamic -lpthreads 
+/usr/bin/ld: -lpthreads が見つかりません
+collect2: error: ld returned 1 exit status
+make[1]: *** [cmTryCompileExec1611367580] エラー 1
+make[1]: ディレクトリ `/MyFolder/dlib-19.4/build/CMakeFiles/CMakeTmp' から出ます
+make: *** [cmTryCompileExec1611367580/fast] エラー 2
+
+

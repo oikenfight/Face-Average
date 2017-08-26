@@ -1,0 +1,2 @@
+/MyFolder/dlib-19.4/build/dlib/CMakeFiles/dlib.dir
+/MyFolder/dlib-19.4/build/dlib/CMakeFiles/dlib_shared.dir

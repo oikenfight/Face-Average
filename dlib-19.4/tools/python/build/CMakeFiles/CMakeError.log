@@ -1,0 +1,53 @@
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /MyFolder/dlib-19.4/tools/python/build/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/make "cmTryCompileExec2559597506/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec2559597506.dir/build.make CMakeFiles/cmTryCompileExec2559597506.dir/build
+make[1]: ディレクトリ `/MyFolder/dlib-19.4/tools/python/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/cmake -E cmake_progress_report /MyFolder/dlib-19.4/tools/python/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec2559597506.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -fPIE   -o CMakeFiles/cmTryCompileExec2559597506.dir/CheckSymbolExists.c.o   -c /MyFolder/dlib-19.4/tools/python/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTryCompileExec2559597506
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2559597506.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTryCompileExec2559597506.dir/CheckSymbolExists.c.o  -o cmTryCompileExec2559597506 -rdynamic 
+CMakeFiles/cmTryCompileExec2559597506.dir/CheckSymbolExists.c.o: 関数 `main' 内:
+CheckSymbolExists.c:(.text+0x1b): `pthread_create' に対する定義されていない参照です
+collect2: error: ld returned 1 exit status
+make[1]: *** [cmTryCompileExec2559597506] エラー 1
+make[1]: ディレクトリ `/MyFolder/dlib-19.4/tools/python/build/CMakeFiles/CMakeTmp' から出ます
+make: *** [cmTryCompileExec2559597506/fast] エラー 2
+
+File /MyFolder/dlib-19.4/tools/python/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /MyFolder/dlib-19.4/tools/python/build/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/make "cmTryCompileExec3388281985/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec3388281985.dir/build.make CMakeFiles/cmTryCompileExec3388281985.dir/build
+make[1]: ディレクトリ `/MyFolder/dlib-19.4/tools/python/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/cmake -E cmake_progress_report /MyFolder/dlib-19.4/tools/python/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec3388281985.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create -fPIE   -o CMakeFiles/cmTryCompileExec3388281985.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
+Linking C executable cmTryCompileExec3388281985
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3388281985.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTryCompileExec3388281985.dir/CheckFunctionExists.c.o  -o cmTryCompileExec3388281985 -rdynamic -lpthreads 
+/usr/bin/ld: -lpthreads が見つかりません
+collect2: error: ld returned 1 exit status
+make[1]: *** [cmTryCompileExec3388281985] エラー 1
+make[1]: ディレクトリ `/MyFolder/dlib-19.4/tools/python/build/CMakeFiles/CMakeTmp' から出ます
+make: *** [cmTryCompileExec3388281985/fast] エラー 2
+
+
