@@ -1,0 +1,8 @@
+.DS_Store
+.idea
+flask/static/men-faces/
+flask/static/women-faces/
+flask/static/men-points/
+flask/static/women-points/
+requirements.txt
+
