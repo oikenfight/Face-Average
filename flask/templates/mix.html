@@ -1,0 +1,129 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="col-12 col-auto">
+        <!-- button -->
+        <div class="row" style="margin-top: 30px; margin-bottom: 30px;">
+            <div class="mx-auto">
+                <button class="btn btn-success" data-toggle="modal" data-target="#originalModal">
+                    Create Original Average
+                </button>
+            </div>
+        </div>
+
+        <div class="col-8 mx-auto">
+            <div class="row card">
+                <div class="card-block mx-auto">
+                    <img id="original-image" src="">
+                </div>
+            </div>
+        </div>
+
+        <!-- original modal -->
+        <div class="modal fade" id="originalModal" tabindex="-1" role="dialog" aria-labelledby="takePhotoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="originalModalLabel">Select Faces !</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <!-- modal body -->
+                    <div class="modal-body">
+                        <div class="col-sm-12">
+                            <!-- nav bar -->
+                            <div class="navbar-toggleable-md" id="navbarCollapse">
+                                <ul class="nav navbar-nav nav-justified">
+                                    <li class="nav-item active">
+                                        <a href="#men" class="nav-link" data-toggle="tab">men</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#women" class="nav-link" data-toggle="tab">women</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="mx-auto row">
+                                <div class="tab-content">
+                                    <!-- men content -->
+                                    <div id="men" class="tab-pane active">
+                                        <div class="mx-auto row">
+                                            {% for img in men_face_names %}
+                                                <div class="col-3 float-left card">
+                                                    <div class="card-block">
+                                                        <img class="img-fluid" src="../static/men-faces/{{ img }}.jpg">
+                                                        <input type="checkbox" class="men-selected" value="{{ img }}">
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <!-- women content -->
+                                    <div id="women" class="tab-pane">
+                                        <div class="mx-auto row">
+                                            {% for img in women_face_names %}
+                                                <div class="col-3 float-left card">
+                                                    <div class="card-block">
+                                                        <img class="img-fluid" src="../static/women-faces/{{ img }}.jpg">
+                                                        <input type="checkbox" class="women-selected" value="{{ img }}">
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" id="create-original-face-button" class="btn btn-primary" data-dismiss="modal">OK!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block additional_js %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        var menOutputImageSrc = '../static/average_faces/men-output.jpg';
+        var womenOutputImageSrc = '../static/average_faces/women-output.jpg';
+        var originalImageSrc = '../static/average_faces/original-output.jpg';
+
+        $('#men-output-image').attr('src', menOutputImageSrc + '?' + new Date().getTime());
+        $('#women-output-image').attr('src', womenOutputImageSrc + '?' + new Date().getTime());
+        $('#original-image').attr('src', originalImageSrc + '?' + new Date().getTime());
+
+        // 選択された画像の平均を作成して更新する
+        $("#create-original-face-button").on("click", function () {
+            var formData = new FormData();
+            var menSelected = $('[class="men-selected"]:checked').map(function(){
+                return $(this).val();
+            }).get();
+            var womenSelected = $('[class="women-selected"]:checked').map(function(){
+                return $(this).val();
+            }).get();
+            formData.append('menSelected', menSelected);
+            formData.append('womenSelected', womenSelected);
+            $.ajax({
+                type: 'POST',
+                url: '/mix',
+                data: formData,
+                processData: false,
+                contentType: false
+            }).done(function (data) {
+                $('#original-image').attr('src', originalImageSrc + '?' + new Date().getTime());
+                alert('選択された顔の平均を作成しました。');
+            }).fail(function() {
+                alert('選択された顔の平均の作成に失敗しました。')
+            })
+        });
+    });
+</script>
+
+
+{% endblock %}

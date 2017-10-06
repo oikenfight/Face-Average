@@ -137,6 +137,7 @@ def constrainPoint(p, w, h):
     p = (min(max(p[0], 0), w - 1), min(max(p[1], 0), h - 1))
     return p
 
+
 # Apply affine transform calculated using srcTri and dstTri to src and
 # output an image of size.
 def applyAffineTransform(src, srcTri, dstTri, size):
@@ -292,18 +293,29 @@ def main(sex):
     cv2.waitKey(0)
 
 
+# # points を読み込む
+# def custom_read_points(path, selected):
+#     for name in selected:
+#         if not name:
+#             continue
+#         points = []
+#         with open(path + name + '.txt', 'r') as f:
+#             for line in f:
+#                 x, y = line.split()
+#                 points.append((int(x), int(y)))
+#         yield points
+#     return
+
+
 # points を読み込む
-def custom_read_points(path, selected):
-    for name in selected:
-        if not name:
-            continue
-        points = []
-        with open(path + name + '.txt', 'r') as f:
-            for line in f:
-                x, y = line.split()
-                points.append((int(x), int(y)))
-        yield points
-    return
+def custom_read_points(path, file_name):
+    points = []
+    with open(path + file_name + '.txt', 'r') as f:
+        for line in f:
+            x, y = line.split()
+            points.append((int(x), int(y)))
+    return points
+
 
 # Read all jpg faces in folder.
 def custom_read_images(path, name):
@@ -334,14 +346,28 @@ def custom(men_selected, women_selected):
     images = []
 
     for name in men_selected:
-        for points in custom_read_points(men_points_path, men_selected):
-            allPoints.append(points)
+        # for points in custom_read_points(men_points_path, men_selected):
+        #     allPoints.append(points)
+        allPoints.append(custom_read_points(men_points_path, name))
         images.append(custom_read_images(men_images_path, name))
+        print(name)
+
+    print("--------------------------")
+    print(len(allPoints))
+    print(len(images))
+    print("--------------------------")
 
     for name in women_selected:
-        for points in custom_read_points(women_points_path, women_selected):
-            allPoints.append(points)
+        # for points in custom_read_points(women_points_path, women_selected):
+        #     allPoints.append(points)
+        allPoints.append(custom_read_points(women_points_path, name))
         images.append(custom_read_images(women_images_path, name))
+        print(name)
+
+    print("--------------------------")
+    print(len(allPoints))
+    print(len(images))
+    print("--------------------------")
 
     # Eye corners
     eyecornerDst = [(np.int(0.3 * w), np.int(h / 3)), (np.int(0.7 * w), np.int(h / 3))]
@@ -424,8 +450,8 @@ def custom(men_selected, women_selected):
 
     # Divide by numImages to get average
     output = output / numImages
-    print('koko3')
 
     # save result image
     cv2.imwrite(result_file, 255 * output)
-    cv2.waitKey(0)
+    # cv2.waitKey(0)
+

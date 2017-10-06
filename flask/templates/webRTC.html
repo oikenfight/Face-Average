@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Webカメラの映像を画像化</title>
+
+    <style>
+        #camera {
+            width: 400px;
+            height: 300px;
+        }
+        #camera {
+            transform: rotateY(180deg);
+        }
+        #img {
+            width: 400px;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+	<h2>Video</h2>
+	<video id="camera" autoplay></video>
+	<button id="start">start</button>
+	<h2>Canvas</h2>
+	<canvas id="canvas"></canvas>
+	<h2>Img</h2>
+	<img id="img">
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript">
+        $(function() {
+            //videoタグを取得
+            var video = document.getElementById('camera');
+            //カメラが起動できたかのフラグ
+            var localMediaStream = null;
+            //カメラ使えるかチェック
+            var hasGetUserMedia = function() {
+                return (navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                    navigator.mozGetUserMedia || navigator.msGetUserMedia);
+            };
+
+            //エラー
+            var onFailSoHard = function(e) {
+                console.log('エラー!', e);
+            };
+
+            if(!hasGetUserMedia()) {
+                alert("未対応ブラウザです。");
+            } else {
+                window.URL = window.URL || window.webkitURL;
+                navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+                navigator.getUserMedia({video: true}, function(stream) {
+                    video.src = window.URL.createObjectURL(stream);
+                    localMediaStream = stream;
+                }, onFailSoHard);
+            }
+
+            $("#start").click(function() {
+                alert('start clicked');
+                console.log('start clicked');
+                if (localMediaStream) {
+                    var canvas = document.getElementById('canvas');
+                    //canvasの描画モードを2sに
+                    var ctx = canvas.getContext('2d');
+                    var img = document.getElementById('img');
+
+                    //videoの縦幅横幅を取得
+                    var w = video.offsetWidth;
+                    var h = video.offsetHeight;
+
+                    //同じサイズをcanvasに指定
+                    canvas.setAttribute("width", w);
+                    canvas.setAttribute("height", h);
+
+                    //canvasにコピー
+                    ctx.drawImage(video, 0, 0, w, h);
+                    //imgにpng形式で書き出し
+                    img.src = canvas.toDataURL('image/png');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

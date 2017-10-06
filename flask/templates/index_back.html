@@ -1,0 +1,322 @@
+{% extends "layout.html" %}
+
+{% block home_content %}
+    <div class ="col-12 col-auto">
+        <div class="col-12 text-center" style="margin-bottom: 50px; margin-top: 50px;">
+            <div class="mx-auto">
+                <button id="update-average-face" class="btn btn-lg btn-outline-primary">Update</button>
+            </div>
+        </div>
+        <div class="col-12 col-auto">
+            <div class="mx-auto col-10">
+                <div class="col-5 float-left" style="margin-right: 10px;">
+                    <h3 class="text-center">Men Average Face</h3>
+                    <img id="men-output-image" class="img-fluid" src="">
+                </div>
+                <div class="col-5 float-right" style="margin-left: 10px">
+                    <h3 class="text-center">Women Average Face</h3>
+                    <img id="women-output-image" class="img-fluid" src="">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block list_men_content %}
+    <div class="col-12 col-auto">
+        <div class="mx-auto col-8 row">
+            {% for img in men_face_names %}
+                <div class="col-3 float-left">
+                    <img class="img-fluid" src="../static/men-faces/{{ img }}.jpg">
+                    <p class="text-center">{{ img }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block list_women_content %}
+    <div class="col-12 col-auto">
+        <div class="mx-auto col-8 row">
+            {% for img in women_face_names %}
+                <div class="col-3 float-left">
+                    <img class="img-fluid" src="../static/women-faces/{{ img }}.jpg">
+                    <p class="text-center">{{ img }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block new_content %}
+    <div class="col-12">
+        <div class="row">
+            <!-- preview -->
+            <div class="col-7 card">
+                 <div class="card-block mx-auto">
+                    <div class="preview"></div>
+                 </div>
+            </div>
+
+            <!-- form -->
+            <div class="col-5 mx-auto">
+                <form id="face-image-form" class="form-control">
+                    <!-- sex -->
+                    <div class="form-group col-12 mx-auto" style="margin-top: 30px">
+                        <label class="control-label col-4 text-center"><b>Gender:</b></label>
+                        <span class="radio-inline">
+                            <input type="radio" value="men" name="gender" id="man">
+                            <label for="man">Man</label>
+                            <input type="radio" value="women" name="gender" id="woman">
+                            <label for="woman">Woman</label>
+                        </span>
+                    </div>
+
+                    <!-- file -->
+                    <div class="form-group col-12 mx-auto" style="margin-top: 50px;">
+                        <div class="mx-auto text-center">
+                            <label for="face-image" class="btn btn-lg btn-outline-primary">
+                                File Upload
+                                <input id="face-image" type="file" style="display:none;"/>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-12 mx-auto">
+                        <div class="mx-auto text-center">
+                            <label class=""> OR </label>
+                        </div>
+                    </div>
+
+                    <!-- take photo -->
+                    <div class="form-group col-12 mx-auto" style="margin-top: 20px;">
+                        <div class="mx-auto text-center">
+                            <label class="btn btn-lg btn-outline-success" data-toggle="modal" data-target="#takePhotoModal">
+                                Take Photo
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- photo modal -->
+                    <!--<div class="modal fade" id="takePhotoModal" tabindex="-1" role="dialog" aria-labelledby="takePhotoModalLabel" aria-hidden="true">-->
+                        <!--<div class="modal-dialog modal-lg" role="document">-->
+                            <!--<div class="modal-content">-->
+                                <!--<div class="modal-header">-->
+                                    <!--<h5 class="modal-title" id="takePhotoModalLabel">Take A Photo</h5>-->
+                                    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+                                        <!--<span aria-hidden="true">&times;</span>-->
+                                    <!--</button>-->
+                                <!--</div>-->
+                                <!--<div class="modal-body">-->
+                                    <!--<div class="col-sm-12">-->
+                                        <!--&lt;!&ndash; button &ndash;&gt;-->
+                                        <!--<div class="row">-->
+                                            <!--<div class="mx-auto">-->
+                                                <!--<button id="snap-shot-button" class="btn btn-success">写真撮影！</button>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+
+                                        <!--&lt;!&ndash; view camera &ndash;&gt;-->
+                                        <!--<div class="row">-->
+                                            <!--<div class="col-auto">-->
+                                                <!--<video id="video" autoplay></video>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+
+                                        <!--&lt;!&ndash; snap shot &ndash;&gt;-->
+                                        <!--<div class="row">-->
+                                            <!--<div class="col-auto">-->
+                                                <!--<img id="snap_shot"/>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+
+                                        <!--<canvas id="canvas" style="display: none" width="2560" height="1600"></canvas>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="modal-footer">-->
+                                    <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                                    <!--<button type="button" class="btn btn-primary">Save</button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!-- upload button -->
+                    <div class="form-group col-12 mx-auto" style="margin-top: 40px;">
+                        <div class="mx-auto text-center">
+                            <button id="image-submit-button" class="btn btn-lg btn-secondary">Upload</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block original_content %}
+    <div class="col-12 col-auto">
+        <!-- button -->
+        <div class="row" style="margin-top: 30px; margin-bottom: 30px;">
+            <div class="mx-auto">
+                <button class="btn btn-success" data-toggle="modal" data-target="#originalModal">
+                    Create Original Average
+                </button>
+            </div>
+        </div>
+
+        <div class="col-8 mx-auto">
+            <div class="row card">
+                <div class="card-block mx-auto">
+                    <img id="original-image" src="">
+                </div>
+            </div>
+        </div>
+
+        <!-- original modal -->
+        <div class="modal fade" id="originalModal" tabindex="-1" role="dialog" aria-labelledby="takePhotoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="originalModalLabel">Select Faces !</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <!-- modal body -->
+                    <div class="modal-body">
+                        <div class="col-sm-12">
+                            <div class="mx-auto row">
+                                {% for img in men_face_names %}
+                                    <div class="col-3 float-left card">
+                                        <div class="card-block">
+                                            <img class="img-fluid" src="../static/men-faces/{{ img }}.jpg">
+                                            <input type="checkbox" class="men-selected" value="{{ img }}">
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                {% for img in women_face_names %}
+                                    <div class="col-3 float-left card">
+                                        <div class="card-block">
+                                            <img class="img-fluid" src="../static/women-faces/{{ img }}.jpg">
+                                            <input type="checkbox" class="women-selected" value="{{ img }}">
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" id="create-original-face-button" class="btn btn-primary">OK!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block additional_js %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        var menOutputImageSrc = '../static/average_faces/men-output.jpg';
+        var womenOutputImageSrc = '../static/average_faces/women-output.jpg';
+        var originalImageSrc = '../static/average_faces/original-output.jpg';
+
+        $('#men-output-image').attr('src', menOutputImageSrc + '?' + new Date().getTime());
+        $('#women-output-image').attr('src', womenOutputImageSrc + '?' + new Date().getTime());
+        $('#original-image').attr('src', originalImageSrc + '?' + new Date().getTime());
+
+        // 画像ファイルプレビュー表示
+        $('#face-image-form').on('change', 'input[type="file"]', function(e) {
+            var file = e.target.files[0],
+                reader = new FileReader(),
+                $preview = $(".preview");
+
+            // 画像ファイル以外の場合は何もしない
+            if(file.type.indexOf("image") < 0){
+              return false;
+            }
+
+            reader.onload = (function(file) {
+                return function(e) {
+                $preview.empty();
+                $preview.append($('<img>').attr({
+                            src: e.target.result,
+                            width: "500px",
+                            class: "preview",
+                            title: file.name
+                        }));
+                };
+            })(file);
+
+            reader.readAsDataURL(file);
+        });
+
+        // 画像をアップロードする
+        $("#image-submit-button").on("click", function () {
+            var radioVal = $("input[name='gender']:checked").val();
+            var inputFile = $('#face-image').prop("files")[0];
+            var formData = new FormData();
+            formData.append('gender', radioVal);
+            formData.append('face', inputFile);
+            $.ajax({
+                type: 'POST',
+                url: '/upload',
+                data: formData,
+                processData: false,
+                contentType: false
+            }).done(function (data) {
+                alert('アップロードが完了しました。');
+            }).fail(function (data) {
+                alert('アップロードに失敗しました。上手く顔が検出出来なかったか、顔が２つ以上検出された可能性があります。')
+            });
+        });
+
+        // 平均画像を更新する
+        $("#update-average-face").on("click", function () {
+            $.ajax({
+                type: 'GET',
+                url: '/update',
+                processData: false,
+                contentType: false
+            }).done(function (data) {
+                $('#men-output-image').attr('src', menOutputImageSrc + '?' + new Date().getTime());
+                $('#women-output-image').attr('src', womenOutputImageSrc + '?' + new Date().getTime());
+                alert('顔平均画像を更新しました。');
+            }).fail(function() {
+                alert('顔平均画像の更新に失敗しました。')
+            })
+        });
+
+        // 選択された画像の平均を作成して更新する
+        $("#create-original-face-button").on("click", function () {
+            var formData = new FormData();
+            var menSelected = $('[class="men-selected"]:checked').map(function(){
+                return $(this).val();
+            }).get();
+            var womenSelected = $('[class="women-selected"]:checked').map(function(){
+                return $(this).val();
+            }).get();
+            formData.append('menSelected', menSelected);
+            formData.append('womenSelected', womenSelected);
+            $.ajax({
+                type: 'POST',
+                url: '/original',
+                data: formData,
+                processData: false,
+                contentType: false
+            }).done(function (data) {
+                $('#original-image').attr('src', originalImageSrc + '?' + new Date().getTime());
+                alert('選択された顔の平均を作成しました。');
+            }).fail(function() {
+                alert('選択された顔の平均の作成に失敗しました。')
+            })
+        });
+    });
+
+</script>
+
+
+{% endblock %}

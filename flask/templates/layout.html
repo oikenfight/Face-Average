@@ -2,6 +2,8 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Face Average</title>
     <link rel="stylesheet" href="../static/node_modules/bootstrap/dist/css/bootstrap.min.css"/>
 </head>
@@ -12,62 +14,33 @@
         <div class="masthead" style="margin-top: 50px;">
             <h3 class="text-muted">Face Average</h3>
             <nav class="navbar navbar-light bg-faded rounded mb-3">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-toggleable-md" id="navbarCollapse">
+                <div class="navbar-toggleable-md" id="navbarCollapse">
                     <ul class="nav navbar-nav nav-justified">
                         <li class="nav-item active">
-                            <a href="#home" class="nav-link" data-toggle="tab">Home</a>
+                            <a href="/" class="nav-link">ホーム</a>
                         </li>
-                        <!--<li class="nav-item">-->
-                            <!--<a href="#list" class="nav-link" data-toggle="tab">List</a>-->
-                        <!--</li>-->
+                        <li class="nav-item">
+                            <a href="/new_photo" class="nav-link">顔写真を登録</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/new_file" class="nav-link">顔写真を選択</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/mix" class="nav-link">合成</a>
+                        </li>
                         <li class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">Link <span class="caret"></span></a>
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">一覧<span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="#list-men" class="nav-link" data-toggle="tab">Men</a></li>
-                                <li><a href="#list-women" class="nav-link" data-toggle="tab">Women</a></li>
+                                <li><a href="/list_men" class="nav-link">男性</a></li>
+                                <li><a href="/list_women" class="nav-link">女性</a></li>
                             </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#new" class="nav-link" data-toggle="tab">New</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#original" class="nav-link" data-toggle="tab">Original</a>
                         </li>
                     </ul>
                 </div>
             </nav>
         </div>
-
-        <!--タブのコンテンツ部分-->
-        <div class="tab-content">
-            <div id="home" class="tab-pane active">
-                <!-- home content -->
-                {% block home_content %}{% endblock %}
-            </div>
-            <div id="list-men" class="tab-pane">
-                <!-- list content -->
-                {% block list_men_content %}{% endblock %}
-            </div>
-            <div id="list-women" class="tab-pane">
-                <!-- list content -->
-                {% block list_women_content %}{% endblock %}
-            </div>
-            <div id="new" class="tab-pane">
-                <!-- new content -->
-                {% block new_content %}{% endblock %}
-            </div>
-            <div id="original" class="tab-pane">
-                <!-- original content -->
-                {% block original_content %}{% endblock %}
-            </div>
-        </div>
-
         <!-- content -->
         {% block content %}{% endblock %}
-
     </div>
 
     <script src="../static/node_modules/tether/dist/js/tether.min.js"></script>

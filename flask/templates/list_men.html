@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="col-12 col-auto">
+        <div class="mx-auto col-8 row">
+            {% for img in men_face_names %}
+                <div class="col-3 float-left">
+                    <img class="img-fluid" src="../static/men-faces/{{ img }}.jpg">
+                    <p class="text-center">{{ img }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block additional_js %}
+{% endblock %}

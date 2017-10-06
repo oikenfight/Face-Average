@@ -1,0 +1,181 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="col-12">
+        <div class="row">
+            <!-- preview -->
+            <div class="col-8 card">
+                 <div class="card-block mx-auto">
+                    <div id="preview">
+                        <video id="camera" class="col-12" autoplay></video>
+                    </div>
+                 </div>
+            </div>
+
+            <div class="col-4 mx-auto">
+                <!-- sex -->
+                <div class="form-group col-12 mx-auto" style="margin-top: 30px">
+                    <div>
+                        <p id="message" class=""></p>
+                    </div>
+                    <label class="control-label col-4 text-center"><b>性別:</b></label>
+                    <span class="radio-inline">
+                        <input type="radio" value="men" name="gender" id="man">
+                        <label for="man">男性</label>
+                        <input type="radio" value="women" name="gender" id="woman">
+                        <label for="woman">女性</label>
+                    </span>
+                </div>
+
+                <!-- image -->
+                <input type="hidden" name="face" value="">
+
+                <!-- take photo -->
+                <div class="form-group col-12 mx-auto" style="margin-top: 100px;">
+                    <div class="mx-auto text-center">
+                        <button id="shot" class="btn btn-lg btn-success" data-toggle="modal" data-target="#PhotoModal">顔写真を撮影</button>
+                    </div>
+                </div>
+
+
+                <!-- photo modal -->
+                <div class="modal fade" id="PhotoModal" tabindex="-1" role="dialog" aria-labelledby="takePhotoModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="takePhotoModalLabel">Take A Photo</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="col-sm-12">
+                                    <!-- canvas -->
+                                    <div class="row">
+                                        <div class="col-auto">
+                    	                    <canvas id="canvas"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取り直す</button>
+                                <button type="button" id="image-submit-button" class="btn btn-primary" data-dismiss="modal">アップロード</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block additional_js %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        // 性別を選択するまで、写真を取れないようにする
+        var checked = $("input[name='gender']:checked").val();
+        console.log(checked);
+        if (checked) {
+            $('#shot').prop("disabled", false);
+            document.getElementById("message").innerText = "";
+        } else {
+            $('#shot').prop("disabled", true);
+            document.getElementById("message").innerText = "性別を選択してください";
+        }
+
+        //videoタグを取得
+        var video = document.getElementById('camera');
+        //カメラが起動できたかのフラグ
+        var localMediaStream = null;
+        //カメラ使えるかチェック
+        var hasGetUserMedia = function() {
+            return (navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia || navigator.msGetUserMedia);
+        };
+
+        //エラー
+        var onFailSoHard = function(e) {
+            console.log('エラー!', e);
+        };
+
+        if(!hasGetUserMedia()) {
+            alert("未対応ブラウザです。");
+        } else {
+            window.URL = window.URL || window.webkitURL;
+            navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+            navigator.getUserMedia({video: true}, function(stream) {
+                video.src = window.URL.createObjectURL(stream);
+                localMediaStream = stream;
+            }, onFailSoHard);
+        }
+
+        // 性別を選択したら、撮影を有効化
+        $('#man').click(function() {
+            $('#shot').prop("disabled", false);
+            document.getElementById("message").innerText = "";
+        });
+        $('#woman').click(function() {
+            $('#shot').prop("disabled", false);
+            document.getElementById("message").innerText = "";
+        });
+
+        // 撮影
+        $("#shot").click(function() {
+            if (localMediaStream) {
+                // canvas
+                var canvas = document.getElementById('canvas');
+                //canvasの描画モードを2sに
+                var ctx = canvas.getContext('2d');
+
+                //videoの縦幅横幅を取得
+                var w = video.offsetWidth;
+                var h = video.offsetHeight;
+
+                //同じサイズをcanvasに指定
+                canvas.setAttribute("width", w);
+                canvas.setAttribute("height", h);
+
+                //canvasにコピー
+                ctx.drawImage(video, 0, 0, w, h);
+                //imgにpng形式で書き出し
+//                img.src = canvas.toDataURL('image/png');
+            }
+        });
+
+        // 画像をアップロードする
+        $("#image-submit-button").on("click", function () {
+            // canvas
+            var canvas = document.getElementById('canvas');
+            var radioVal = $("input[name='gender']:checked").val();
+            var photoData = canvas.toDataURL('image/jpeg');
+            photoData = photoData.replace(/^.*,/, '');
+            console.log(photoData);
+            var formData = new FormData();
+            formData.append('gender', radioVal);
+            formData.append('face', photoData);
+            console.log(formData.get('face'));
+            $.ajax({
+                type: 'POST',
+                url: '/upload_photo',
+                data: formData,
+                processData: false,
+                contentType: false
+            }).done(function (data) {
+                alert('アップロードが完了しました。');
+                $('#man').val("");
+                $('#woman').val("");
+                $('#face-image').val("");
+                $('#image-preview').attr('src', "");
+//                location.href = "{{ url_for('mix') }}";
+            }).fail(function (data) {
+                console.log(data);
+                alert('アップロードに失敗しました。上手く顔が検出出来なかったか、顔が２つ以上検出された可能性があります。')
+            });
+        });
+    });
+
+</script>
+
+
+{% endblock %}
